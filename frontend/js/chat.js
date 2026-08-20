@@ -112,6 +112,29 @@ function toggleEmojiPicker() {
   }
 }
 function insertEmoji(emoji) { if (!msgInput) return; msgInput.value += emoji; msgInput.focus(); }
+function pollForMessages() {
+  if (!activeChat || !currentUser) return;
+  var token = getToken();
+  var contact = contacts.find(function(c) { return c.id === activeChat; });
+  if (!contact) return;
+  fetch(API_BASE + '/messages/' + contact.realId, { headers: { 'Authorization': 'Bearer ' + token } })
+    .then(function(res) { return res.json(); })
+    .then(function(msgs) {
+      if (msgs && msgs.length) {
+        var currentCount = (messages[activeChat] || []).length;
+        if (msgs.length > currentCount) {
+          messages[activeChat] = msgs.map(function(m) {
+            return { id: 'm' + m.id, from: m.sender_id === currentUser.id ? 'me' : activeChat, text: m.deleted ? 'This message was deleted' : m.text, time: formatTime(m.sent_at), read: m.is_read === true || m.is_read === 1 };
+          });
+          saveData();
+          renderMessages(activeChat);
+          renderChatList();
+          updateUnreadBadge();
+        }
+      }
+    })
+    .catch(function() {});
+}
 function loadSavedWallpaper() {
   var saved = localStorage.getItem('marvel_wallpaper');
   if (saved && thread) {
@@ -299,6 +322,7 @@ async function initChat() {
   updateUnreadBadge();
   bindEvents();
   syncInterval = setInterval(updateSyncTime, 30000);
+  pollInterval = setInterval(pollForMessages, 5000);
 }
 async function loadData() {
   var token = getToken();
