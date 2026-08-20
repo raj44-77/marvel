@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: marvel
+    runtime: python
+    buildCommand: pip install -r backend/requirements.txt
+    startCommand: uvicorn backend.main:app --host 0.0.0.0 --port 8000
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.0
+      - key: DATABASE_URL
+        value: postgresql://marvel_user:OHO2t0yF3KlTwKIaZR4plTX4vsM68deo@dpg-da39d8bncjis73c2nsvg-a.singapore-postgres.render.com/marvel_network
+      - key: JWT_SECRET
+        value: marvel-stark-jarvis-secret-key
+      - key: JWT_ALGORITHM
+        value: HS256
+      - key: JWT_EXPIRY_HOURS
+        value: 72
+      - key: DEBUG
+        value: false
