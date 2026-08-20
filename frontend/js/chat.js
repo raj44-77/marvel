@@ -585,6 +585,7 @@ function bindEvents() {
     activeChat = null;
     navigateTo('messages');
   });
+  if (addContactBtn) addContactBtn.addEventListener('click', showAddContactModal);
   var thanosBtn = document.getElementById('thanosBtn');
   if (thanosBtn) thanosBtn.addEventListener('click', callThanos);
   var jarvisHelpBtn = document.getElementById('jarvisHelpBtn');
