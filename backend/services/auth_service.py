@@ -82,7 +82,7 @@ def register_user(phone: str, password: str, display_name: str, username: str = 
     avatar_letter = display_name[0].upper() if display_name else "U"
     user_id = execute_query(
         """INSERT INTO users (phone, password_hash, username, display_name, avatar_letter, status_text, is_online) 
-           VALUES (%s, %s, %s, %s, %s, %s, TRUE)""",
+           VALUES (%s, %s, %s, %s, %s, %s, TRUE) RETURNING id""",
         (phone, password_hash, username, display_name, avatar_letter, status_text),
         fetch=False
     )
