@@ -7,6 +7,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
+import sys, os
+sys.path.append(os.path.dirname(__file__))
 from config import APP_NAME, APP_VERSION, DEBUG
 import os
 
