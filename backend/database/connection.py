@@ -1,21 +1,16 @@
 import psycopg
-import psycopg.pool
 from config import DB_CONFIG
-import urllib.parse
-connection_pool = None
-def get_pool():
-    global connection_pool
-    if connection_pool is None:
-        db_url = DB_CONFIG.get("database_url", "")
-        if db_url:
-            connection_pool = psycopg.pool.ConnectionPool(db_url, min_size=1, max_size=10)
-        else:
-            result = urllib.parse.urlparse(db_url)
-            dsn = f"host={result.hostname} port={result.port or 5432} user={result.username} password={result.password} dbname={result.path[1:]}"
-            connection_pool = psycopg.pool.ConnectionPool(dsn, min_size=1, max_size=10)
-    return connection_pool
 def get_connection():
-    return get_pool().getconn()
+    db_url = DB_CONFIG.get("database_url", "")
+    if db_url:
+        return psycopg.connect(db_url)
+    return psycopg.connect(
+        host=DB_CONFIG["host"],
+        port=DB_CONFIG["port"],
+        user=DB_CONFIG["user"],
+        password=DB_CONFIG["password"],
+        dbname=DB_CONFIG["database"]
+    )
 def execute_query(query, params=None, fetch=True):
     conn = get_connection()
     try:
@@ -35,7 +30,7 @@ def execute_query(query, params=None, fetch=True):
         conn.rollback()
         raise e
     finally:
-        get_pool().putconn(conn)
+        conn.close()
 def execute_many(query, params_list):
     conn = get_connection()
     try:
@@ -47,4 +42,4 @@ def execute_many(query, params_list):
         conn.rollback()
         raise e
     finally:
-        get_pool().putconn(conn)
+        conn.close()
