@@ -1,58 +1,58 @@
-# ============================================
-# MARVEL — database/connection.py
-# MySQL connection pool management
-# ============================================
-
-import mysql.connector
-from mysql.connector import pooling
+import psycopg2
+import psycopg2.pool
 from config import DB_CONFIG
-
-# Create connection pool
+import urllib.parse
 connection_pool = None
-
 def get_pool():
-    """Get or create the MySQL connection pool"""
     global connection_pool
     if connection_pool is None:
-        connection_pool = pooling.MySQLConnectionPool(
-            host=DB_CONFIG["host"],
-            port=DB_CONFIG["port"],
-            user=DB_CONFIG["user"],
-            password=DB_CONFIG["password"],
-            database=DB_CONFIG["database"],
-            pool_name=DB_CONFIG["pool_name"],
-            pool_size=DB_CONFIG["pool_size"],
-            pool_reset_session=DB_CONFIG["pool_reset_session"],
-            autocommit=DB_CONFIG["autocommit"],
-        )
+        db_url = DB_CONFIG.get("database_url", "")
+        if db_url:
+            result = urllib.parse.urlparse(db_url)
+            connection_pool = psycopg2.pool.SimpleConnectionPool(
+                1, 10,
+                host=result.hostname,
+                port=result.port or 5432,
+                user=result.username,
+                password=result.password,
+                database=result.path[1:]
+            )
+        else:
+            connection_pool = psycopg2.pool.SimpleConnectionPool(
+                1, 10,
+                host=DB_CONFIG["host"],
+                port=DB_CONFIG["port"],
+                user=DB_CONFIG["user"],
+                password=DB_CONFIG["password"],
+                database=DB_CONFIG["database"]
+            )
     return connection_pool
-
 def get_connection():
-    """Get a connection from the pool"""
     pool = get_pool()
-    return pool.get_connection()
-
+    return pool.getconn()
 def execute_query(query, params=None, fetch=True):
-    """Execute a query and return results"""
     conn = get_connection()
-    cursor = conn.cursor(dictionary=True)
+    cursor = conn.cursor()
     try:
+        import psycopg2.extras
+        cursor = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
         cursor.execute(query, params or ())
         if fetch:
             result = cursor.fetchall()
             return result
         else:
             conn.commit()
-            return cursor.lastrowid
+            try:
+                return cursor.fetchone()[0] if cursor.description else None
+            except:
+                return None
     except Exception as e:
         conn.rollback()
         raise e
     finally:
         cursor.close()
-        conn.close()
-
+        get_pool().putconn(conn)
 def execute_many(query, params_list):
-    """Execute multiple inserts"""
     conn = get_connection()
     cursor = conn.cursor()
     try:
@@ -64,4 +64,4 @@ def execute_many(query, params_list):
         raise e
     finally:
         cursor.close()
-        conn.close()
+        get_pool().putconn(conn)
