@@ -1,0 +1,242 @@
+/* ============================================
+   MARVEL — about.css
+   About page styles
+   ============================================ */
+
+/* -------- PAGE -------- */
+.about-page{
+  position:relative;
+  z-index:1;
+  height:100dvh;
+  overflow:auto;
+  padding:20px;
+}
+
+.about-container{
+  max-width:700px;
+  margin:0 auto;
+  padding:20px 0 60px;
+}
+
+/* -------- BACK LINK -------- */
+.back-link{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  color:var(--mut);
+  text-decoration:none;
+  font-size:10px;
+  letter-spacing:.2em;
+  margin-bottom:24px;
+  transition:.2s;
+}
+
+.back-link:hover{
+  color:var(--red2);
+  text-shadow:0 0 12px var(--red);
+}
+
+/* -------- HERO -------- */
+.about-hero{
+  text-align:center;
+  padding:40px 24px;
+  margin-bottom:20px;
+  position:relative;
+  overflow:hidden;
+}
+
+.hero-glow{
+  position:absolute;
+  top:-100px;
+  left:50%;
+  transform:translateX(-50%);
+  width:300px;
+  height:200px;
+  background:var(--red);
+  filter:blur(80px);
+  opacity:calc(.18 * var(--i));
+}
+
+.about-hero .hud-ring{
+  margin-bottom:20px;
+}
+
+.tagline{
+  font-family:var(--mono);
+  letter-spacing:.3em;
+  font-size:10px;
+  color:var(--mut);
+  text-transform:uppercase;
+  margin:16px 0 8px;
+}
+
+.version{
+  font-family:var(--mono);
+  font-size:9px;
+  color:var(--dim);
+  letter-spacing:.16em;
+}
+
+/* -------- SECTIONS -------- */
+.about-section{
+  padding:28px;
+  margin-bottom:16px;
+}
+
+.about-section h2{
+  margin:0 0 14px;
+  font-family:var(--grotesk);
+  font-size:16px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--txt);
+}
+
+.about-section p{
+  color:var(--mut);
+  font-size:14px;
+  line-height:1.7;
+  margin:0 0 10px;
+}
+
+.about-section p:last-child{
+  margin-bottom:0;
+}
+
+.about-section.text-center{
+  text-align:center;
+}
+
+/* -------- FEATURES GRID -------- */
+.about-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  gap:12px;
+  margin-bottom:16px;
+}
+
+.about-card{
+  padding:22px 18px;
+  text-align:center;
+  transition:.2s;
+}
+
+.about-card:hover{
+  border-color:color-mix(in oklab,var(--red) 40%,transparent);
+  transform:translateY(-2px);
+}
+
+.card-icon{
+  font-size:32px;
+  margin-bottom:10px;
+}
+
+.about-card h3{
+  margin:0 0 8px;
+  font-family:var(--grotesk);
+  font-size:14px;
+  letter-spacing:.08em;
+  color:var(--txt);
+}
+
+.about-card p{
+  color:var(--mut);
+  font-size:12px;
+  line-height:1.5;
+  margin:0;
+}
+
+/* -------- TECH STACK -------- */
+.tech-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:10px;
+}
+
+.tech-item{
+  padding:10px 0;
+}
+
+.tech-item .lbl{
+  display:block;
+  margin-bottom:4px;
+  color:var(--red2);
+}
+
+.tech-item span:last-child{
+  color:var(--txt);
+  font-size:14px;
+}
+
+/* -------- CREATOR -------- */
+.creator-name{
+  margin:8px 0 4px;
+  font-family:var(--grotesk);
+  font-size:20px;
+  letter-spacing:.2em;
+}
+
+.creator-quote{
+  color:var(--mut);
+  font-size:14px;
+  font-style:italic;
+  margin-top:12px;
+}
+
+/* -------- FOOTER -------- */
+.about-footer{
+  text-align:center;
+  padding:24px 0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+  flex-wrap:wrap;
+}
+
+.about-footer a{
+  color:var(--mut);
+  text-decoration:none;
+  font-size:10px;
+  transition:.2s;
+}
+
+.about-footer a:hover{
+  color:var(--red2);
+}
+
+.sep-dot{
+  color:var(--dim);
+}
+
+.dim{
+  color:var(--dim);
+}
+
+/* -------- RESPONSIVE -------- */
+@media(max-width:720px){
+  .about-page{
+    padding:12px;
+  }
+  
+  .about-hero{
+    padding:30px 16px;
+  }
+  
+  .wordmark.xl{
+    font-size:28px;
+  }
+  
+  .about-section{
+    padding:20px 16px;
+  }
+  
+  .about-grid{
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+  }
+  
+  .about-card{
+    padding:16px 12px;
+  }
+}

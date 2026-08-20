@@ -1,0 +1,316 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<link rel="icon" type="image/png" href="/assets/images/marvel-logo.png" />
+<title>MARVEL — Chat</title>
+<meta name="description" content="MARVEL — Private messaging interface." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/global.css" />
+<link rel="stylesheet" href="/css/components.css" />
+<link rel="stylesheet" href="/css/chat.css" />
+</head>
+<body>
+
+<!-- ============ BACKGROUND ============ -->
+<div class="grid-bg"></div>
+
+<!-- ============ MAIN APP ============ -->
+<main id="app" class="app">
+
+  <!-- TOP BAR -->
+  <header class="topbar">
+    <div class="tb-left">
+      <button class="icon-btn only-mobile" id="mobBack">‹</button>
+      <div class="wordmark sm">MARVEL<i></i></div>
+      <span class="mono tag">STARK SYSTEMS ONLINE <b class="dot pulse"></b></span>
+    </div>
+    <div class="tb-right mono">
+      <span>LATENCY <b>24ms</b></span>
+      <span class="sep"></span>
+      <span>LAST SYNC <b id="syncTime">--:--</b></span>
+    </div>
+  </header>
+
+  <!-- SHELL: SIDEBAR + CONTENT -->
+  <div class="shell">
+
+    <!-- SIDEBAR NAVIGATION -->
+    <nav class="nav" id="sidebarNav">
+      <div class="nav-brand">
+        <div class="wordmark">MARVEL<i></i></div>
+        <div class="mono sub2">PRIVATE NETWORK</div>
+        <div class="mono status-online"><b class="dot pulse"></b> SYSTEM ONLINE</div>
+      </div>
+
+      <ul class="nav-list" id="navList">
+        <li data-nav="messages" class="active">
+          <span>💬</span> Private Channels <b class="badge hidden" id="navBadge">0</b>
+        </li>
+        <li data-nav="contacts">
+          <span>👥</span> Avengers
+        </li>
+        <li data-nav="favorites">
+          <span>⭐</span> Inner Circle
+        </li>
+        <li data-nav="profile">
+          <span>👤</span> Identity
+        </li>
+        <li data-nav="settings">
+          <span>⚙</span> System Config
+        </li>
+      </ul>
+
+      <div class="nav-foot mono">
+        <div class="lbl">SYSTEM</div>
+        <div>v1.0.0</div>
+        <div class="enc"><b class="dot"></b> ENCRYPTED CHANNEL</div>
+      </div>
+    </nav>
+
+    <!-- ============ MESSAGES VIEW ============ -->
+    <section class="view active" data-view="messages">
+      <div class="cols">
+
+        <!-- CHAT LIST PANEL -->
+        <aside class="chatlist pane" id="chatlistPane">
+          <div class="pane-head">
+            <h2>Private Channels</h2>
+            <div class="search">
+              <span>⌕</span>
+              <input id="chatSearch" placeholder="Scan private channels..." autocomplete="off" />
+            </div>
+          </div>
+          <div class="list" id="chatList">
+            <!-- Chat items rendered by JS -->
+            <div class="empty-state">
+              <div class="icon">💬</div>
+              <h3>No conversations</h3>
+              <p>Add contacts to start messaging</p>
+            </div>
+          </div>
+        </aside>
+
+        <!-- CHAT THREAD PANEL -->
+        <section class="chat pane" id="chatPane">
+          <div class="empty-state" id="chatEmpty">
+            <div class="icon">⟵</div>
+            <h3>Select a conversation</h3>
+            <p>Choose a contact to start messaging</p>
+          </div>
+
+          <!-- Chat Head (hidden until chat selected) -->
+          <div class="chat-head hidden" id="chatHead"></div>
+
+          <!-- Thread -->
+          <div class="thread hidden" id="thread"></div>
+
+          <!-- Typing Indicator -->
+          <div class="typing hidden" id="typing">
+            <b class="dot"></b>
+            <span id="typingName">Vision</span> is typing<i>.</i><i>.</i><i>.</i>
+          </div>
+
+          <!-- Composer -->
+          <div class="emoji-picker hidden" id="emojiPicker"></div>
+          <div class="reply-bar hidden" id="replyBar">
+  <div>
+    <div class="mono" id="replySender"></div>
+    <div id="replyText"></div>
+  </div>
+  <button class="icon-btn" onclick="cancelReply()">✕</button>
+</div>
+          <div class="composer hidden" id="composer">
+            <button class="icon-btn" data-demo="Emoji picker">😊</button>
+            
+            
+            <input id="msgInput" placeholder="Transmit..." autocomplete="off" />
+            
+            <button class="send" id="sendBtn">➤</button>
+          </div>
+        </section>
+
+        <!-- CONTACT DETAILS PANEL -->
+        <aside class="details pane" id="detailsPane">
+          <!-- Rendered by JS -->
+        </aside>
+
+      </div>
+    </section>
+
+    <!-- ============ CONTACTS VIEW ============ -->
+    <section class="view" data-view="contacts">
+      <div class="page">
+        <div class="page-head">
+          <div>
+            <h1>CONTACTS</h1>
+            <p>Your Avengers</p>
+          </div>
+          <button class="btn primary" id="addContactBtn">+ ADD CONTACT</button>
+        </div>
+        <div class="search wide">
+          <span>⌕</span>
+          <input id="contactSearch" placeholder="Scan network..." autocomplete="off" />
+        </div>
+        <div id="contactGroups">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ FAVORITES VIEW ============ -->
+    <section class="view" data-view="favorites">
+      <div class="page">
+        <div class="page-head">
+          <div>
+            <h1>FAVORITES</h1>
+            <p>Priority connections</p>
+          </div>
+        </div>
+        <div id="favGrid" class="cards">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ PROFILE VIEW ============ -->
+    <section class="view" data-view="profile">
+      <div class="page narrow">
+        <div class="profile-hero glass">
+          <div class="hero-glow"></div>
+          <div class="avatar xl" data-sym="R" style="--c:#e01a2b" id="profAvatar">R</div>
+          <h1 id="profName">RAJ</h1>
+          <div class="mono sub2" id="profBadge">PRIVATE USER · AVENGER ID // RAJ-001</div>
+          <p class="status-line" id="profStatus">"Building things that shouldn't exist."</p>
+          <button class="btn ghost" id="editIdentityBtn">EDIT PROFILE</button>
+        </div>
+        <div class="info-grid">
+          <div class="info glass">
+            <div class="mono lbl">PHONE</div>
+            <div id="profPhone">+91 98765 43210</div>
+          </div>
+          <div class="info glass">
+            <div class="mono lbl">USERNAME</div>
+            <div id="profUser">@raj.dev</div>
+          </div>
+          <div class="info glass">
+            <div class="mono lbl">MEMBER SINCE</div>
+            <div id="profSince">March 2024</div>
+          </div>
+          <div class="info glass">
+            <div class="mono lbl">ACTIVE DEVICES</div>
+            <div>3 nodes</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SETTINGS VIEW ============ -->
+    <section class="view" data-view="settings">
+      <div class="page narrow">
+        <div class="page-head">
+          <div>
+            <h1>SYSTEM CONFIG</h1>
+            <p>STARK PROTOCOL // preferences</p>
+          </div>
+        </div>
+        <div class="set-group glass">
+          <div class="mono lbl">APPEARANCE</div>
+          <div class="row">
+            <span>Red accent intensity</span>
+            <input type="range" id="accentSlider" min="40" max="130" value="100" />
+          </div>
+          <div class="row">
+            <span>Compact mode</span>
+            <label class="switch">
+              <input type="checkbox" id="compactToggle">
+              <i></i>
+            </label>
+          </div>
+        </div>
+        <div class="set-group glass">
+          <div class="mono lbl">APPLICATION</div>
+          <div class="row">
+            <span>JARVIS Commands</span>
+            <button class="btn ghost sm" id="jarvisHelpBtn">HELP</button>
+          </div>
+          <div class="row">
+            <span>About MARVEL</span>
+            <button class="btn ghost sm" onclick="window.location.href='about.html'">Open</button>
+          </div>
+          <div class="row">
+            <span>Terms and Privacy</span>
+            <button class="btn ghost sm" onclick="window.location.href='terms.html'">Open</button>
+          </div>
+          <div class="row">
+            <span>Notifications</span>
+            <label class="switch">
+              <input type="checkbox" id="notifToggle" checked>
+              <i></i>
+            </label>
+          </div>
+          <div class="row">
+            <span>Sounds</span>
+            <label class="switch">
+              <input type="checkbox" id="soundsToggle">
+              <i></i>
+            </label>
+          </div>
+        </div>
+        <div class="set-group glass">
+          <div class="mono lbl">DANGER ZONE</div>
+          
+        <div class="set-group glass">
+          <div class="mono lbl">DANGER ZONE</div>
+          
+        <div class="set-group glass">
+          <div class="mono lbl" style="color:var(--crim);">DANGER ZONE</div>
+          <div class="row">
+            <span style="color:var(--red2);">CALL THANOS</span>
+            <button class="btn ghost sm" id="thanosBtn" style="color:var(--red2);border-color:var(--crim);">CALL</button>
+          </div>
+        </div>
+        <div class="set-foot">
+          <div class="wordmark sm">MARVEL<i></i></div>
+          <div class="mono">Private Communication Network | Version 1.0.0</div>
+          <button class="btn ghost sm" id="logoutBtn">DISCONNECT</button>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- MOBILE TAB BAR -->
+  <nav class="tabbar only-mobile" id="tabbar">
+    <button data-nav="messages" class="active">💬<span>Channels</span></button>
+    <button data-nav="contacts">👥<span>Avengers</span></button>
+    <button data-nav="favorites">⭐<span>Circle</span></button>
+    <button data-nav="profile">👤<span>Identity</span></button>
+    <button data-nav="settings">⚙<span>System Config</span></button>
+  </nav>
+
+</main>
+
+<!-- ============ MODALS ============ -->
+<div class="modal-root hidden" id="modalRoot">
+  <div class="backdrop" data-close></div>
+  <div class="modal glass" id="modalBox"></div>
+</div>
+
+<!-- ============ LIGHTBOX ============ -->
+<div class="lightbox hidden" id="lightbox">
+  <button class="icon-btn close" data-close>✕</button>
+  <div id="lightboxBody"></div>
+</div>
+
+<!-- ============ TOASTS ============ -->
+<div class="toasts" id="toasts"></div>
+
+<script src="/js/app.js"></script>
+<script src="/js/utils.js"></script>
+<script src="/js/chat.js"></script>
+</body>
+</html>

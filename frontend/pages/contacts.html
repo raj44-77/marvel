@@ -1,0 +1,93 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<link rel="icon" type="image/png" href="/assets/images/marvel-logo.png" />
+<title>MARVEL — Contacts</title>
+<meta name="description" content="MARVEL — Manage your private network contacts." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/global.css" />
+<link rel="stylesheet" href="/css/components.css" />
+<link rel="stylesheet" href="/css/contacts.css" />
+</head>
+<body>
+
+<!-- ============ BACKGROUND ============ -->
+<div class="grid-bg"></div>
+<div class="ambient a1"></div>
+<div class="ambient a2"></div>
+
+<!-- ============ MAIN APP ============ -->
+<main class="app">
+
+  <!-- TOP BAR -->
+  <header class="topbar">
+    <div class="tb-left">
+      <a href="/pages/chat.html" class="icon-btn">‹</a>
+      <div class="wordmark sm">MARVEL<i></i></div>
+      <span class="mono tag">STARK SYSTEMS ONLINE <b class="dot pulse"></b></span>
+    </div>
+    <div class="tb-right mono">
+      <span>LATENCY <b>24ms</b></span>
+      <span class="sep"></span>
+      <span>ENCRYPTED <b class="dot"></b></span>
+    </div>
+  </header>
+
+  <!-- PAGE CONTENT -->
+  <div class="page">
+    <div class="page-head">
+      <div>
+        <h1>CONTACTS</h1>
+        <p>Your private network</p>
+      </div>
+      <button class="btn primary" id="addContactBtn">+ ADD CONTACT</button>
+    </div>
+
+    <!-- Search -->
+    <div class="search wide">
+      <span>⌕</span>
+      <input id="contactSearch" placeholder="Search contacts..." autocomplete="off" />
+    </div>
+
+    <!-- Contact Groups -->
+    <div id="contactGroups">
+      <!-- Rendered by JS -->
+    </div>
+
+    <!-- Empty State (hidden by default) -->
+    <div class="empty-state hidden" id="emptyContacts">
+      <div class="icon">👥</div>
+      <h3>No contacts yet</h3>
+      <p>Add your first contact to start building your private network</p>
+    </div>
+  </div>
+
+  <!-- MOBILE TAB BAR -->
+  <nav class="tabbar only-mobile">
+    <a href="/pages/chat.html">💬<span>Chats</span></a>
+    <a class="active">👥<span>Contacts</span></a>
+    <a href="/pages/chat.html" data-nav="favorites">⭐<span>Favs</span></a>
+    <a href="/pages/chat.html" data-nav="profile">👤<span>Profile</span></a>
+    <a href="/pages/chat.html" data-nav="settings">⚙<span>Settings</span></a>
+  </nav>
+
+</main>
+
+<!-- ============ MODALS ============ -->
+<div class="modal-root hidden" id="modalRoot">
+  <div class="backdrop" data-close></div>
+  <div class="modal glass" id="modalBox"></div>
+</div>
+
+<!-- ============ TOASTS ============ -->
+<div class="toasts" id="toasts"></div>
+
+<script src="/js/app.js"></script>
+<script src="/js/utils.js"></script>
+<script src="/js/contacts.js"></script>
+</body>
+</html>

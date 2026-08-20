@@ -1,0 +1,232 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<link rel="icon" type="image/png" href="/assets/images/marvel-logo.png" />
+<title>MARVEL — Access Granted</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/global.css" />
+<link rel="stylesheet" href="/css/transition.css" />
+</head>
+<body>
+<div class="sound-start" id="soundStart">
+  <div class="sound-start-inner">
+    <div class="mono">CLICK TO ACTIVATE SOUND</div>
+    <p>Tap anywhere to begin the MARVEL experience</p>
+  </div>
+</div>
+<div class="sound-start" id="soundStart">
+  <div class="sound-start-inner">
+    <div class="mono">🔊 CLICK TO ACTIVATE SOUND</div>
+    <p>Tap anywhere to begin the MARVEL experience</p>
+  </div>
+</div>
+
+<div class="cinematic">
+  
+  <!-- Background layers -->
+  <div class="bg-void"></div>
+  <div class="bg-glow glow-1"></div>
+  <div class="bg-glow glow-2"></div>
+  
+  <!-- Scanning laser lines -->
+  <div class="scan-line scan-1"></div>
+  <div class="scan-line scan-2"></div>
+  <div class="scan-line scan-3"></div>
+  
+  <!-- Particles -->
+  <div class="particles" id="particles"></div>
+  
+  <!-- HUD Rings -->
+  <div class="hud-left">
+    <div class="hud-ring-lg"><span></span><span></span><span></span></div>
+  </div>
+  <div class="hud-right">
+    <div class="hud-ring-sm"><span></span><span></span></div>
+  </div>
+  
+  <!-- Corner brackets -->
+  <div class="corner tl"></div>
+  <div class="corner tr"></div>
+  <div class="corner bl"></div>
+  <div class="corner br"></div>
+  
+  <!-- Top status bar -->
+  <div class="cin-top">
+    <span class="cin-label mono">STARK SECURE CHANNEL</span>
+    <span class="cin-status mono">● SYSTEM ONLINE</span>
+  </div>
+  
+  <!-- Bottom status bar -->
+  <div class="cin-bottom">
+    <span class="cin-label mono">J.A.R.V.I.S. v1.0</span>
+    <span class="cin-label mono">ENCRYPTED</span>
+    <span class="cin-label mono">PRIVATE NODE</span>
+  </div>
+  
+  <!-- Main content -->
+  <div class="cin-content">
+    
+    <!-- Shield logo -->
+    <div class="shield-container">
+      <img src="/assets/images/marvel-logo.png" alt="MARVEL" class="marvel-logo-big" />
+    </div>
+    
+    <!-- Terminal text -->
+    <div class="terminal" id="terminal">
+      <div class="term-line mono" id="line1"></div>
+      <div class="term-line mono" id="line2"></div>
+      <div class="term-line mono" id="line3"></div>
+    </div>
+    
+    <!-- Welcome -->
+    <div class="welcome hidden" id="welcome">
+      <h1 class="welcome-name" id="welcomeName">HELLO, RAJ.</h1>
+      <p class="welcome-sub">WELCOME TO MARVEL'S PRIVATE COMMUNICATION NETWORK.</p>
+      <p class="welcome-motto">No feeds. No stories. No distractions.<br>Just you and the people who matter.</p>
+      <p class="welcome-quote hidden" id="quote1">You can now privately text the Avengers in your life.</p>
+      <p class="welcome-joke hidden" id="quote2">Peter Parker would probably just text MJ.<br>You, however, have your own network.</p>
+    </div>
+    
+    <!-- System status -->
+    <div class="sys-status hidden" id="sysStatus">
+      <div class="sys-row mono"><span>PRIVATE COMMUNICATION CHANNELS:</span> <b class="ok">READY</b></div>
+      <div class="sys-row mono"><span>PERSONAL NETWORK:</span> <b class="ok">ONLINE</b></div>
+      <div class="sys-row mono"><span>SECURITY PROTOCOL:</span> <b class="ok">ACTIVE</b></div>
+    </div>
+    
+    <!-- Final access -->
+    <div class="access hidden" id="access">
+      <h2 class="access-title">ACCESS GRANTED</h2>
+      <p class="access-sub">Your private communication network is waiting.</p>
+      <button class="btn-enter" id="enterBtn">
+        <span>GET IN</span>
+        <span class="arrow">→</span>
+      </button>
+    </div>
+    
+  </div>
+  
+</div>
+
+<script src="/js/app.js"></script>
+<script>
+// -------- SOUND EFFECTS --------
+var audioCtx = null;
+function initAudio() {
+  if (!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  }
+}
+function playBeep(freq, duration, volume) {
+  try {
+    initAudio();
+    var osc = audioCtx.createOscillator();
+    var gain = audioCtx.createGain();
+    osc.type = 'sine';
+    osc.frequency.value = freq || 880;
+    gain.gain.value = volume || 0.08;
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + (duration || 0.15));
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.start();
+    osc.stop(audioCtx.currentTime + (duration || 0.15));
+  } catch(e) {}
+}
+function playTypeSound() {
+  playBeep(1200, 0.05, 0.04);
+}
+function playAccessGranted() {
+  playBeep(440, 0.2, 0.06);
+  setTimeout(function() { playBeep(660, 0.2, 0.06); }, 200);
+  setTimeout(function() { playBeep(880, 0.3, 0.08); }, 400);
+}
+function playClickSound() {
+  playBeep(600, 0.1, 0.05);
+  setTimeout(function() { playBeep(900, 0.08, 0.04); }, 80);
+}
+// Generate particles
+function createParticles() {
+  var container = document.getElementById('particles');
+  if (!container) return;
+  for (var i = 0; i < 40; i++) {
+    var p = document.createElement('div');
+    p.className = 'particle';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.bottom = Math.random() * 50 + '%';
+    p.style.animationDelay = Math.random() * 6 + 's';
+    p.style.animationDuration = (4 + Math.random() * 6) + 's';
+    container.appendChild(p);
+  }
+}
+// Typewriter function
+function typeText(elementId, text, speed, callback) {
+  var el = document.getElementById(elementId);
+  if (!el) { if(callback) callback(); return; }
+  var i = 0;
+  el.classList.remove('hidden');
+  function type() {
+    if (i <= text.length) {
+      el.textContent = text.substring(0, i); if (i > 0 && i % 2 === 0) playTypeSound();
+      i++;
+      setTimeout(type, speed);
+    } else {
+      if(callback) setTimeout(callback, 400);
+    }
+  }
+  type();
+}
+// Show element
+function show(id, callback) {
+  var el = document.getElementById(id);
+  if (!el) { if(callback) callback(); return; }
+  el.classList.remove('hidden');
+  el.classList.add('visible');
+  if(callback) setTimeout(callback, 300);
+}
+// Sequence
+function runSequence() {
+  var userName = '';
+  var userData = localStorage.getItem('marvel_user');
+  if (userData) {
+    try { userName = JSON.parse(userData).display_name || 'USER'; } catch(e) { userName = 'USER'; }
+  }
+  typeText('line1', 'IDENTITY VERIFIED...', 40, function() {
+    typeText('line2', 'PRIVATE CHANNEL ESTABLISHED...', 40, function() {
+      typeText('line3', 'AVENGER NETWORK ACCESS GRANTED...', 40, function() {
+        document.getElementById('terminal').classList.add('fade-out');
+        setTimeout(function() {
+          document.getElementById('welcomeName').textContent = 'HELLO, ' + userName.toUpperCase() + '.';
+          show('welcome', function() {
+            setTimeout(function() { show('quote1'); }, 800);
+            setTimeout(function() { show('quote2'); }, 1800);
+            setTimeout(function() { show('sysStatus'); }, 3200);
+            setTimeout(function() { show('access'); playAccessGranted(); }, 4500);
+          });
+        }, 600);
+      });
+    });
+  });
+}
+// Enter button
+document.addEventListener('DOMContentLoaded', function() {
+  createParticles();
+  runSequence();
+  document.getElementById('soundStart').addEventListener('click', function() {
+    initAudio();
+    this.style.display = 'none';
+  });
+  document.getElementById('enterBtn').addEventListener('click', function() {
+    var btn = this;
+    btn.classList.add('clicked'); playClickSound();
+    setTimeout(function() {
+      window.location.href = '/pages/chat.html';
+    }, 500);
+  });
+});
+</script>
+</body>
+</html>

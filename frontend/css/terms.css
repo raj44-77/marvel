@@ -1,0 +1,145 @@
+/* ============================================
+   MARVEL — terms.css
+   Terms & Privacy page styles
+   ============================================ */
+
+/* -------- PAGE -------- */
+.terms-page{
+  position:relative;
+  z-index:1;
+  height:100dvh;
+  overflow:auto;
+  padding:20px;
+}
+
+.terms-container{
+  max-width:700px;
+  margin:0 auto;
+  padding:20px 0 60px;
+}
+
+/* -------- BACK LINK -------- */
+.back-link{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  color:var(--mut);
+  text-decoration:none;
+  font-size:10px;
+  letter-spacing:.2em;
+  margin-bottom:24px;
+  transition:.2s;
+}
+
+.back-link:hover{
+  color:var(--red2);
+  text-shadow:0 0 12px var(--red);
+}
+
+/* -------- HEADER -------- */
+.terms-header{
+  text-align:center;
+  padding:32px 24px;
+  margin-bottom:16px;
+}
+
+.terms-header .wordmark{
+  margin-bottom:12px;
+}
+
+.update-date{
+  font-family:var(--mono);
+  font-size:9px;
+  color:var(--dim);
+  letter-spacing:.14em;
+  margin-top:8px;
+}
+
+/* -------- SECTIONS -------- */
+.terms-section{
+  padding:28px;
+  margin-bottom:16px;
+}
+
+.terms-section h2{
+  margin:0 0 16px;
+  font-family:var(--grotesk);
+  font-size:18px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:var(--txt);
+  border-bottom:1px solid var(--line);
+  padding-bottom:10px;
+}
+
+.terms-section h3{
+  margin:18px 0 8px;
+  font-family:var(--grotesk);
+  font-size:14px;
+  letter-spacing:.08em;
+  color:var(--red2);
+}
+
+.terms-section p{
+  color:var(--mut);
+  font-size:14px;
+  line-height:1.7;
+  margin:0 0 10px;
+}
+
+.terms-section p:last-child{
+  margin-bottom:0;
+}
+
+.terms-section.text-center{
+  text-align:center;
+}
+
+/* -------- FOOTER -------- */
+.terms-footer{
+  text-align:center;
+  padding:24px 0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+  flex-wrap:wrap;
+}
+
+.terms-footer a{
+  color:var(--mut);
+  text-decoration:none;
+  font-size:10px;
+  transition:.2s;
+}
+
+.terms-footer a:hover{
+  color:var(--red2);
+}
+
+.sep-dot{
+  color:var(--dim);
+}
+
+.dim{
+  color:var(--dim);
+}
+
+/* -------- RESPONSIVE -------- */
+@media(max-width:720px){
+  .terms-page{
+    padding:12px;
+  }
+  
+  .terms-section{
+    padding:20px 16px;
+  }
+  
+  .terms-section h2{
+    font-size:16px;
+  }
+  
+  .terms-header{
+    padding:24px 16px;
+  }
+}

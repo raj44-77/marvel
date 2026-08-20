@@ -1,0 +1,116 @@
+/* ============================================
+   MARVEL — login.css
+   Login page styles
+   ============================================ */
+
+/* -------- LOGIN CONTAINER -------- */
+.login{
+  position:fixed;
+  inset:0;
+  display:grid;
+  place-items:center;
+  padding:24px;
+  overflow:auto;
+  z-index:1;
+}
+
+/* -------- LOGIN CARD -------- */
+.login-card{
+  position:relative;
+  z-index:2;
+  width:min(420px,100%);
+  padding:38px 34px;
+  text-align:center;
+  box-shadow:var(--shadow);
+  animation:pop .4s cubic-bezier(.2,.9,.3,1);
+}
+
+/* -------- SUB TEXT -------- */
+.sub{
+  font-family:var(--mono);
+  letter-spacing:.3em;
+  font-size:10px;
+  color:var(--mut);
+  text-transform:uppercase;
+  margin:16px 0 26px;
+}
+
+/* -------- ERROR MESSAGE -------- */
+.error-msg{
+  color:var(--red2);
+  font-size:12px;
+  margin:-8px 0 12px;
+  text-align:left;
+  font-family:var(--mono);
+  letter-spacing:.08em;
+  animation:fadeUp .3s ease;
+}
+
+/* -------- LOADING STATE -------- */
+.login-card.loading #loginBtnText{
+  visibility:hidden;
+}
+
+.login-card.loading #loginSpinner{
+  display:block;
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+}
+
+.login-card.loading .btn{
+  pointer-events:none;
+  opacity:.8;
+}
+
+.login-card.loading .field input{
+  opacity:.6;
+  pointer-events:none;
+}
+
+/* -------- FOOTER -------- */
+.foot-node{
+  margin-top:22px;
+  padding-top:16px;
+  border-top:1px solid var(--line);
+  font-size:9px;
+  text-align:center;
+}
+
+/* -------- SUCCESS STATE -------- */
+.login-card.success .btn.primary{
+  background:linear-gradient(135deg,#39d353,#2ea043);
+  pointer-events:none;
+}
+
+.login-card.success .field input{
+  border-color:#39d353;
+  box-shadow:0 0 24px rgba(57,211,83,.3);
+}
+
+/* -------- RESPONSIVE -------- */
+@media(max-width:480px){
+  .login{
+    padding:16px;
+  }
+  
+  .login-card{
+    padding:28px 22px;
+  }
+  
+  .wordmark.xl{
+    font-size:28px;
+  }
+  
+  .hud-ring.small{
+    width:72px;height:72px;
+  }
+}
+
+@media(max-height:600px){
+  .login{
+    align-items:flex-start;
+    padding-top:40px;
+  }
+}

@@ -1,0 +1,79 @@
+/* ============================================
+   MARVEL — boot.css
+   Boot / loading screen styles
+   ============================================ */
+
+/* -------- BOOT SCREEN -------- */
+.boot{
+  position:fixed;
+  inset:0;
+  z-index:90;
+  display:grid;
+  place-items:center;
+  background:radial-gradient(ellipse at 50% 50%,#0d0508,#030304 70%);
+}
+
+.boot-inner{
+  text-align:center;
+}
+
+.boot-mark{
+  margin:34px 0 18px;
+  font-size:30px;
+}
+
+.boot-line{
+  color:var(--mut);
+  font-family:var(--mono);
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  font-size:10px;
+  animation:fadeBlink 1.5s ease-in-out infinite;
+}
+
+@keyframes fadeBlink{
+  0%,100%{opacity:.4}
+  50%{opacity:1}
+}
+
+/* -------- PROGRESS BAR -------- */
+.boot-bar{
+  width:240px;
+  height:2px;
+  background:#1a1a1f;
+  margin:22px auto 0;
+  border-radius:2px;
+  overflow:hidden;
+}
+
+.boot-bar > div{
+  height:100%;
+  width:0;
+  background:linear-gradient(90deg,var(--crim),var(--red2));
+  box-shadow:var(--glow);
+  transition:width .3s ease-out;
+}
+
+/* -------- LOADED STATE -------- */
+.boot.done .boot-bar > div{
+  width:100%;
+}
+
+.boot.done .boot-line{
+  color:var(--red2);
+  animation:none;
+  opacity:1;
+}
+
+/* -------- FADE OUT -------- */
+.boot.fade-out{
+  animation:fadeBoot .5s ease-out forwards;
+}
+
+@keyframes fadeBoot{
+  to{
+    opacity:0;
+    transform:scale(1.05);
+    pointer-events:none;
+  }
+}

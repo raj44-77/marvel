@@ -1,0 +1,120 @@
+/* ============================================
+   MARVEL — signup.css
+   Sign up / registration page styles
+   ============================================ */
+
+/* -------- SIGNUP CONTAINER -------- */
+.signup{
+  position:fixed;
+  inset:0;
+  display:grid;
+  place-items:center;
+  padding:24px;
+  overflow:auto;
+  z-index:1;
+}
+
+/* -------- SIGNUP CARD -------- */
+.signup-card{
+  position:relative;
+  z-index:2;
+  width:min(440px,100%);
+  padding:34px 34px;
+  text-align:center;
+  box-shadow:var(--shadow);
+  animation:pop .4s cubic-bezier(.2,.9,.3,1);
+}
+
+/* -------- SUB TEXT -------- */
+.sub{
+  font-family:var(--mono);
+  letter-spacing:.3em;
+  font-size:10px;
+  color:var(--mut);
+  text-transform:uppercase;
+  margin:16px 0 26px;
+}
+
+/* -------- OPTIONAL LABEL -------- */
+.optional{
+  color:var(--dim);
+  font-weight:400;
+  letter-spacing:.08em;
+}
+
+/* -------- ERROR MESSAGE -------- */
+.error-msg{
+  color:var(--red2);
+  font-size:12px;
+  margin:-4px 0 12px;
+  text-align:left;
+  font-family:var(--mono);
+  letter-spacing:.08em;
+  animation:fadeUp .3s ease;
+}
+
+/* -------- LOADING STATE -------- */
+.signup-card.loading #signupBtnText{
+  visibility:hidden;
+}
+
+.signup-card.loading #signupSpinner{
+  display:block;
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+}
+
+.signup-card.loading .btn{
+  pointer-events:none;
+  opacity:.8;
+}
+
+.signup-card.loading .field input{
+  opacity:.6;
+  pointer-events:none;
+}
+
+/* -------- SUCCESS STATE -------- */
+.signup-card.success .btn.primary{
+  background:linear-gradient(135deg,#39d353,#2ea043);
+  pointer-events:none;
+}
+
+/* -------- FOOTER -------- */
+.foot-node{
+  margin-top:22px;
+  padding-top:16px;
+  border-top:1px solid var(--line);
+  font-size:9px;
+  text-align:center;
+}
+
+/* -------- RESPONSIVE -------- */
+@media(max-width:480px){
+  .signup{
+    padding:16px;
+    align-items:flex-start;
+    padding-top:20px;
+  }
+  
+  .signup-card{
+    padding:24px 18px;
+  }
+  
+  .wordmark.xl{
+    font-size:26px;
+  }
+  
+  .hud-ring.small{
+    width:64px;height:64px;
+  }
+}
+
+@media(max-height:700px){
+  .signup{
+    align-items:flex-start;
+    padding-top:30px;
+  }
+}

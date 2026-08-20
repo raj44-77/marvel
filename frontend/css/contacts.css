@@ -1,0 +1,231 @@
+/* ============================================
+   MARVEL — contacts.css
+   Contacts page styles
+   ============================================ */
+
+/* -------- APP SHELL -------- */
+.app{
+  position:relative;
+  height:100dvh;
+  display:flex;
+  flex-direction:column;
+  z-index:1;
+}
+
+/* -------- TOP BAR -------- */
+.topbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  height:52px;
+  padding:0 16px;
+  border-bottom:1px solid var(--line);
+  background:rgba(8,8,10,.8);
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+  flex:none;
+  z-index:10;
+}
+
+.tb-left{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+
+.tag{
+  color:var(--mut);
+  font-size:10px;
+}
+
+.tb-right{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+
+.tb-right b{
+  color:var(--txt);
+}
+
+.sep{
+  width:1px;
+  height:14px;
+  background:var(--line2);
+}
+
+/* -------- PAGE -------- */
+.page{
+  flex:1;
+  overflow:auto;
+  padding:32px 36px 60px;
+}
+
+.page-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  gap:16px;
+  margin-bottom:24px;
+}
+
+.page-head h1{
+  margin:0;
+  font-family:var(--grotesk);
+  font-size:26px;
+  letter-spacing:.16em;
+}
+
+.page-head p{
+  margin:6px 0 0;
+  color:var(--mut);
+  font-size:13px;
+}
+
+/* -------- CONTACT GROUPS -------- */
+.grp-letter{
+  font-family:var(--mono);
+  font-size:10px;
+  letter-spacing:.2em;
+  color:var(--red2);
+  margin:22px 0 10px;
+  padding-bottom:6px;
+  border-bottom:1px solid var(--line);
+}
+
+/* -------- CONTACT CARDS -------- */
+.ccard{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:13px;
+  margin-bottom:6px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:rgba(255,255,255,.02);
+  transition:.24s;
+  animation:fadeUp .35s both;
+  cursor:pointer;
+}
+
+.ccard:hover{
+  border-color:color-mix(in oklab,var(--red) 45%,transparent);
+  box-shadow:var(--glow);
+  transform:translateY(-2px);
+}
+
+.ccard .n{
+  font-size:14px;
+  font-weight:600;
+  color:var(--txt);
+}
+
+.ccard .s{
+  font-family:var(--mono);
+  font-size:9px;
+  letter-spacing:.14em;
+  color:var(--dim);
+  margin-top:3px;
+}
+
+.ccard .actions-row{
+  margin-left:auto;
+  display:flex;
+  gap:4px;
+}
+
+/* -------- FAVORITE STAR -------- */
+.fav-star{
+  font-size:18px;
+  cursor:pointer;
+  transition:.2s;
+  background:none;
+  border:none;
+  padding:4px;
+}
+
+.fav-star:hover{
+  transform:scale(1.2);
+}
+
+.fav-star.active{
+  color:#f0c040;
+  text-shadow:0 0 8px rgba(240,192,64,.5);
+}
+
+/* -------- TAB BAR (MOBILE) -------- */
+.tabbar{
+  display:none;
+}
+
+.only-mobile{
+  display:none;
+}
+
+/* -------- RESPONSIVE -------- */
+@media(max-width:900px){
+  .tb-right{
+    display:none;
+  }
+}
+
+@media(max-width:720px){
+  .only-mobile{
+    display:flex;
+  }
+  
+  .page{
+    padding:22px 18px 90px;
+  }
+  
+  .page-head{
+    flex-direction:column;
+    align-items:flex-start;
+  }
+  
+  .page-head h1{
+    font-size:22px;
+  }
+  
+  .search.wide{
+    max-width:100%;
+  }
+  
+  .tabbar{
+    display:flex;
+    position:fixed;
+    left:0;right:0;
+    bottom:0;
+    height:62px;
+    border-top:1px solid var(--line);
+    background:rgba(8,8,10,.92);
+    backdrop-filter:blur(16px);
+    -webkit-backdrop-filter:blur(16px);
+    z-index:30;
+  }
+  
+  .tabbar a{
+    flex:1;
+    background:transparent;
+    border:0;
+    color:var(--dim);
+    font-size:17px;
+    display:grid;
+    gap:3px;
+    place-items:center;
+    cursor:pointer;
+    text-decoration:none;
+  }
+  
+  .tabbar a span{
+    font-size:9.5px;
+    font-family:var(--mono);
+    letter-spacing:.1em;
+  }
+  
+  .tabbar a.active{
+    color:var(--red2);
+    text-shadow:0 0 12px var(--red);
+  }
+}

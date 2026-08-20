@@ -1,0 +1,394 @@
+/* ============================================
+   MARVEL — global.css
+   Shared foundation for all pages
+   ============================================ */
+
+/* -------- RESET -------- */
+*,*::before,*::after{box-sizing:border-box}
+
+/* -------- CSS VARIABLES -------- */
+:root{
+  --bg:#050506; --bg2:#0a0a0c; --surf:#101013; --surf2:#151519;
+  --line:rgba(255,255,255,.07); --line2:rgba(255,255,255,.12);
+  --txt:#eceef2; --mut:#8b8f99; --dim:#5e626c;
+  --red:#e01a2b; --red2:#ff3b48; --crim:#8c0f1c;
+  --i:1; /* accent intensity */
+  --glow:0 0 24px color-mix(in oklab, var(--red) calc(28% * var(--i)), transparent);
+  --shadow:0 24px 60px rgba(0,0,0,.65);
+  --r:14px;
+  --mono:'JetBrains Mono',ui-monospace,monospace;
+  --grotesk:'Space Grotesk',sans-serif;
+  --body:'Inter',system-ui,sans-serif;
+}
+
+/* -------- BASE -------- */
+html,body{height:100%}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--txt);
+  font-family:var(--body);
+  -webkit-font-smoothing:antialiased;
+  overflow:hidden;
+}
+
+/* -------- TYPOGRAPHY -------- */
+.mono{
+  font-family:var(--mono);
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  font-size:10px;
+  color:var(--dim);
+}
+.hidden{display:none!important}
+button,input{font:inherit;color:inherit}
+a{color:var(--red2);text-decoration:none;transition:.2s}
+a:hover{color:var(--red);text-shadow:0 0 12px var(--red)}
+
+/* -------- SCROLLBAR -------- */
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-thumb{background:#1e1e24;border-radius:8px}
+::-webkit-scrollbar-track{background:transparent}
+
+/* -------- SELECTION -------- */
+::selection{background:color-mix(in oklab,var(--red) 45%,transparent)}
+
+/* -------- BACKGROUND EFFECTS -------- */
+.grid-bg{
+  position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
+  background-size:56px 56px;
+  mask-image:radial-gradient(ellipse at 50% 40%,#000 10%,transparent 80%);
+  animation:drift 40s linear infinite;
+}
+@keyframes drift{to{background-position:56px 56px,56px 56px}}
+
+.ambient{
+  position:fixed;
+  width:60vw;height:60vw;
+  border-radius:50%;
+  filter:blur(120px);
+  opacity:calc(.16 * var(--i));
+  pointer-events:none;
+  z-index:0;
+}
+.a1{
+  background:var(--red);
+  top:-25vw;left:-15vw;
+  animation:float1 18s ease-in-out infinite alternate;
+}
+.a2{
+  background:var(--crim);
+  bottom:-30vw;right:-15vw;
+  animation:float1 24s ease-in-out infinite alternate-reverse;
+}
+@keyframes float1{to{transform:translate3d(6vw,4vw,0) scale(1.15)}}
+
+/* -------- WORDMARK -------- */
+.wordmark{
+  position:relative;
+  display:inline-block;
+  font-family:var(--grotesk);
+  font-weight:700;
+  letter-spacing:.34em;
+  font-size:19px;
+  text-transform:uppercase;
+  color:#fff;
+  text-shadow:0 0 18px color-mix(in oklab,var(--red) calc(45% * var(--i)),transparent);
+}
+.wordmark i{
+  position:absolute;
+  left:0;right:.34em;
+  bottom:-7px;
+  height:2px;
+  background:linear-gradient(90deg,transparent,var(--red),var(--red2),transparent);
+  box-shadow:var(--glow);
+  border-radius:2px;
+}
+.wordmark.sm{font-size:14px}
+.wordmark.xl{font-size:38px;letter-spacing:.42em}
+
+/* -------- GLASS CARD -------- */
+.glass{
+  background:linear-gradient(160deg,rgba(255,255,255,.045),rgba(255,255,255,.012));
+  border:1px solid var(--line);
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+  border-radius:var(--r);
+}
+
+/* -------- DOT INDICATOR -------- */
+.dot{
+  display:inline-block;
+  width:7px;height:7px;
+  border-radius:50%;
+  background:var(--red);
+  box-shadow:0 0 8px var(--red);
+  vertical-align:middle;
+}
+.dot.pulse{animation:pulse 2s ease-out infinite}
+@keyframes pulse{
+  0%{box-shadow:0 0 0 0 color-mix(in oklab,var(--red) 60%,transparent)}
+  70%{box-shadow:0 0 0 8px transparent}
+  100%{box-shadow:0 0 0 0 transparent}
+}
+
+/* -------- HUD RING -------- */
+.hud-ring{
+  position:relative;
+  width:130px;height:130px;
+  margin:0 auto;
+}
+.hud-ring.small{width:96px;height:96px}
+.hud-ring span{
+  position:absolute;inset:0;
+  border-radius:50%;
+  border:1px solid color-mix(in oklab,var(--red) 40%,transparent);
+}
+.hud-ring span:nth-child(1){border-style:dashed;animation:spin 14s linear infinite}
+.hud-ring span:nth-child(2){inset:16%;border-top-color:transparent;border-left-color:transparent;animation:spin 7s linear infinite reverse}
+.hud-ring span:nth-child(3){inset:34%;border-color:rgba(255,255,255,.14);border-bottom-color:var(--red2);animation:spin 4s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* -------- BUTTONS -------- */
+.btn{
+  position:relative;overflow:hidden;
+  border:1px solid var(--line2);
+  background:rgba(255,255,255,.03);
+  padding:11px 20px;
+  border-radius:10px;
+  font-size:12px;font-weight:600;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  cursor:pointer;
+  transition:.25s;
+  font-family:var(--body);
+  color:var(--txt);
+}
+.btn:hover{
+  border-color:color-mix(in oklab,var(--red) 60%,transparent);
+  box-shadow:var(--glow);
+  transform:translateY(-1px);
+}
+.btn.primary{
+  background:linear-gradient(135deg,var(--crim),var(--red));
+  border-color:transparent;
+  color:#fff;
+}
+.btn.block{width:100%;margin-top:8px}
+.btn.sm{padding:7px 13px;font-size:10px}
+.btn.ghost{
+  background:transparent;
+  border:1px solid var(--line);
+  color:var(--txt);
+}
+.btn.ghost:hover{
+  background:rgba(255,255,255,.04);
+  border-color:var(--line2);
+}
+.btn:disabled{
+  opacity:.5;
+  cursor:not-allowed;
+  pointer-events:none;
+}
+
+/* -------- ICON BUTTON -------- */
+.icon-btn{
+  background:transparent;
+  border:1px solid transparent;
+  color:var(--mut);
+  width:38px;height:38px;
+  border-radius:10px;
+  cursor:pointer;
+  font-size:15px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  transition:.2s;
+}
+.icon-btn:hover{
+  color:#fff;
+  border-color:var(--line2);
+  background:rgba(255,255,255,.04);
+  box-shadow:var(--glow);
+}
+
+/* -------- FORM FIELDS -------- */
+.field{
+  display:block;
+  text-align:left;
+  margin-bottom:14px;
+}
+.field .lbl{
+  display:block;
+  margin-bottom:7px;
+  font-family:var(--mono);
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  font-size:10px;
+  color:var(--dim);
+}
+.field input,
+.search input{
+  width:100%;
+  background:#0c0c0f;
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:13px 14px;
+  color:var(--txt);
+  font-family:var(--body);
+  font-size:14px;
+  outline:none;
+  transition:.25s;
+}
+.field input:focus,
+.search input:focus{
+  border-color:var(--red);
+  box-shadow:var(--glow);
+}
+.field input::placeholder,
+.search input::placeholder{
+  color:var(--dim);
+}
+
+/* -------- SEARCH -------- */
+.search{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  background:#0c0c0f;
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:0 12px;
+  transition:.25s;
+}
+.search:focus-within{
+  border-color:color-mix(in oklab,var(--red) 65%,transparent);
+  box-shadow:var(--glow);
+}
+.search span{color:var(--dim);font-size:14px}
+.search input{
+  background:transparent;
+  border:0;
+  padding:11px 0;
+  outline:none;
+}
+.search.wide{max-width:420px;margin-bottom:22px}
+
+/* -------- SWITCH TOGGLE -------- */
+.switch{
+  position:relative;
+  width:42px;height:23px;
+  display:inline-block;
+  cursor:pointer;
+}
+.switch input{
+  opacity:0;width:0;height:0;
+  position:absolute;
+}
+.switch i{
+  position:absolute;inset:0;
+  background:#26262c;
+  border-radius:20px;
+  transition:.25s;
+}
+.switch i::after{
+  content:"";
+  position:absolute;
+  top:3px;left:3px;
+  width:17px;height:17px;
+  border-radius:50%;
+  background:#71757f;
+  transition:.25s;
+}
+.switch input:checked + i{
+  background:color-mix(in oklab,var(--red) 60%,#26262c);
+  box-shadow:var(--glow);
+}
+.switch input:checked + i::after{
+  transform:translateX(19px);
+  background:#fff;
+}
+
+/* -------- RANGE SLIDER -------- */
+input[type=range]{
+  accent-color:var(--red);
+  width:140px;
+  cursor:pointer;
+}
+
+/* -------- BADGE -------- */
+.badge{
+  background:var(--red);
+  color:#fff;
+  font-size:10px;
+  font-weight:700;
+  padding:2px 7px;
+  border-radius:20px;
+  box-shadow:var(--glow);
+  display:inline-block;
+}
+.pill{
+  background:var(--red);
+  color:#fff;
+  font-size:10px;
+  font-weight:700;
+  min-width:19px;height:19px;
+  display:grid;
+  place-items:center;
+  border-radius:20px;
+  box-shadow:var(--glow);
+}
+
+/* -------- ANIMATIONS (shared) -------- */
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}}
+@keyframes slideIn{from{opacity:0;transform:translateY(12px) scale(.98)}}
+@keyframes fade{from{opacity:0}}
+@keyframes pop{from{opacity:0;transform:scale(.94) translateY(10px)}}
+@keyframes blink{0%,60%,100%{opacity:.2}30%{opacity:1}}
+
+/* -------- HINT TEXT -------- */
+.hint{
+  color:var(--dim);
+  font-size:12px;
+  margin:16px 0 0;
+  text-align:center;
+}
+
+/* -------- LINKS -------- */
+.link-row{
+  text-align:center;
+  margin-top:16px;
+  font-size:12px;
+  color:var(--mut);
+}
+.link-row a{
+  color:var(--red2);
+  text-decoration:none;
+  font-weight:500;
+}
+.link-row a:hover{
+  text-decoration:underline;
+  text-shadow:0 0 12px var(--red);
+}
+
+/* -------- STATUS COLORS -------- */
+.online{color:#9be59b}
+.offline{color:var(--dim)}
+.away{color:#f0c040}
+
+/* -------- COMPACT MODE -------- */
+body.compact .row{padding:8px 0}
+body.compact .thread{gap:8px;padding:16px}
+body.compact .set-group{padding:12px 14px}/* -------- MOTTO -------- */
+.motto{
+  color:var(--mut);
+  font-size:12px;
+  line-height:1.8;
+  margin:0 0 20px;
+  font-style:italic;
+  text-align:center;
+  letter-spacing:.04em;
+}
