@@ -2,7 +2,7 @@
    MARVEL � auth.js
    Login & Signup with password
    ============================================ */
-var API_BASE = window.location.protocol + '//' + window.location.hostname + ':8000/api/v1';
+var API_BASE = window.location.protocol + '//' + window.location.hostname + '/api/v1';
 // DOM refs
 var loginPhone = document.getElementById('loginPhone');
 var loginPassword = document.getElementById('loginPassword');

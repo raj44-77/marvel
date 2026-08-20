@@ -12,7 +12,7 @@ var wsReconnectTimer = null;
 var typingTimer = null;
 var emojiPicker = null;
 var replyToMessage = null;
-var API_BASE = window.location.protocol + '//' + window.location.hostname + ':8000/api/v1';
+var API_BASE = window.location.protocol + '//' + window.location.hostname + '/api/v1';
 var chatList = document.getElementById('chatList');
 var chatEmpty = document.getElementById('chatEmpty');
 var chatHead = document.getElementById('chatHead');
@@ -38,7 +38,7 @@ function connectWebSocket() {
   var token = localStorage.getItem('marvel_token');
   if (!token) return;
   try {
-    ws = new WebSocket('ws://' + window.location.hostname + ':8000/api/v1/ws');
+    ws = new WebSocket((window.location.protocol === 'https:' ? 'wss://' : 'ws://') + window.location.hostname + '/api/v1/ws');
     ws.onopen = function() { console.log('WS Connected'); ws.send(JSON.stringify({ token: token })); };
     ws.onmessage = function(event) {
       var data = JSON.parse(event.data);
