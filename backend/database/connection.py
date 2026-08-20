@@ -1,5 +1,5 @@
-import psycopg2
-import psycopg2.pool
+import psycopg
+import psycopg.pool
 from config import DB_CONFIG
 import urllib.parse
 connection_pool = None
@@ -8,60 +8,43 @@ def get_pool():
     if connection_pool is None:
         db_url = DB_CONFIG.get("database_url", "")
         if db_url:
-            result = urllib.parse.urlparse(db_url)
-            connection_pool = psycopg2.pool.SimpleConnectionPool(
-                1, 10,
-                host=result.hostname,
-                port=result.port or 5432,
-                user=result.username,
-                password=result.password,
-                database=result.path[1:]
-            )
+            connection_pool = psycopg.pool.ConnectionPool(db_url, min_size=1, max_size=10)
         else:
-            connection_pool = psycopg2.pool.SimpleConnectionPool(
-                1, 10,
-                host=DB_CONFIG["host"],
-                port=DB_CONFIG["port"],
-                user=DB_CONFIG["user"],
-                password=DB_CONFIG["password"],
-                database=DB_CONFIG["database"]
-            )
+            result = urllib.parse.urlparse(db_url)
+            dsn = f"host={result.hostname} port={result.port or 5432} user={result.username} password={result.password} dbname={result.path[1:]}"
+            connection_pool = psycopg.pool.ConnectionPool(dsn, min_size=1, max_size=10)
     return connection_pool
 def get_connection():
-    pool = get_pool()
-    return pool.getconn()
+    return get_pool().getconn()
 def execute_query(query, params=None, fetch=True):
     conn = get_connection()
-    cursor = conn.cursor()
     try:
-        import psycopg2.extras
-        cursor = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
-        cursor.execute(query, params or ())
-        if fetch:
-            result = cursor.fetchall()
-            return result
-        else:
-            conn.commit()
-            try:
-                return cursor.fetchone()[0] if cursor.description else None
-            except:
+        with conn.cursor() as cursor:
+            cursor.execute(query, params or ())
+            if fetch:
+                columns = [desc[0] for desc in cursor.description] if cursor.description else []
+                rows = cursor.fetchall()
+                return [dict(zip(columns, row)) for row in rows]
+            else:
+                conn.commit()
+                if cursor.description:
+                    row = cursor.fetchone()
+                    return row[0] if row else None
                 return None
     except Exception as e:
         conn.rollback()
         raise e
     finally:
-        cursor.close()
         get_pool().putconn(conn)
 def execute_many(query, params_list):
     conn = get_connection()
-    cursor = conn.cursor()
     try:
-        cursor.executemany(query, params_list)
-        conn.commit()
-        return cursor.rowcount
+        with conn.cursor() as cursor:
+            cursor.executemany(query, params_list)
+            conn.commit()
+            return cursor.rowcount
     except Exception as e:
         conn.rollback()
         raise e
     finally:
-        cursor.close()
         get_pool().putconn(conn)
